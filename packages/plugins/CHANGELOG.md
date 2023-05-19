@@ -1,5 +1,409 @@
 # @chugsplash/plugins
 
+## 0.14.1
+
+### Patch Changes
+
+- 8fe018e: Change Hardhat `node` task param from 'silent' to 'hide' due to conflict with existing task
+
+## 0.14.0
+
+### Minor Changes
+
+- 57cd798: Make ChugSplash non-upgradeable
+- ac40b0b: Require that proposers are approved by the project owner
+
+### Patch Changes
+
+- 27cb63b: Remove meta upgrade tests
+- 1c5e99a: Add support for async config files
+- c43c960: Add input validation for config variables
+- ea4bc1e: Add a protocol fee to be collected during execution
+- 41f420c: Allow function types in contracts
+- 06c9af9: Only initialize ChugSplash on local networks
+- e2392ad: Update remoteExecution parameter to only be true when proposing on a live network
+- c309331: Add organization ID
+- b5f5268: Display ChugSplash errors and warnings by default when running Hardhat tests
+- fb9442a: Add support for user defined types
+- 0ef343d: Write artifacts for proxy and implementation contracts
+- 2a0939a: Separate local canonical config files by network
+- d652952: Use create3 to deploy non-proxy contracts
+- bf1fde7: Add parsing and validation on constructor arugments
+- 1d54d12: Add support for flexible constructors and mutable constructor arguments
+- dffa427: Fix bug encoding address payable
+- 011f0f6: Fix minor bugs when importing OpenZeppelin storage layout
+- 992e2fb: Resolve build info files automatically
+- 02220c4: Add { gap } keyword
+- ff87792: Fix behavior of contracts deployed using Create3
+- da576c3: Split UUPS adapter into ownable and access control adapters
+- 8eb6686: Add support for other OpenZeppelin storage safety check options
+- ae6641d: Add propoer address to bundle proposed event
+- b05b489: Replace TODOs with Linear tickets
+- 1ba3adc: Make contract execution atomic
+- 89c3fe2: Support contract references in constructor arguments
+- e797869: Add claimer field to config
+- 3d9f9c2: Add support for deploying stateless non-proxied contracts
+- f433bc2: Remove claimer from config and registry
+- 26ab2ad: Get previous storage layout using OpenZeppelin's format
+- 11fd15c: Make chugsplash-deploy task execute locally by default
+- ff58a7d: Add support for struct constructor args
+- ab983d4: Refactor encoding logic into separate encoding and parsing processes
+- be43435: Change proxy ownership transfer tasks to remove ambiguity
+- c69aa51: Remove extra CLI tasks
+- Updated dependencies [7ee54af]
+- Updated dependencies [5896c7c]
+- Updated dependencies [1c5e99a]
+- Updated dependencies [c43c960]
+- Updated dependencies [b8952d1]
+- Updated dependencies [ea4bc1e]
+- Updated dependencies [1ac2ebd]
+- Updated dependencies [49a4934]
+- Updated dependencies [41f420c]
+- Updated dependencies [ddbea87]
+- Updated dependencies [c319493]
+- Updated dependencies [28e807d]
+- Updated dependencies [06c9af9]
+- Updated dependencies [e2392ad]
+- Updated dependencies [c309331]
+- Updated dependencies [d7dc1ba]
+- Updated dependencies [fb9442a]
+- Updated dependencies [73277b5]
+- Updated dependencies [0ef343d]
+- Updated dependencies [491683b]
+- Updated dependencies [e5b9f81]
+- Updated dependencies [2a0939a]
+- Updated dependencies [b7e779f]
+- Updated dependencies [d652952]
+- Updated dependencies [9fccb34]
+- Updated dependencies [a26ab46]
+- Updated dependencies [d2f9fae]
+- Updated dependencies [ed81039]
+- Updated dependencies [bf1fde7]
+- Updated dependencies [1d54d12]
+- Updated dependencies [dffa427]
+- Updated dependencies [f1cf9ac]
+- Updated dependencies [992e2fb]
+- Updated dependencies [c2712bf]
+- Updated dependencies [d540efc]
+- Updated dependencies [69dcfba]
+- Updated dependencies [57cd798]
+- Updated dependencies [fba0fa0]
+- Updated dependencies [aa7051a]
+- Updated dependencies [b41ec91]
+- Updated dependencies [34790fa]
+- Updated dependencies [cccb052]
+- Updated dependencies [b204c6e]
+- Updated dependencies [1eeba58]
+- Updated dependencies [02220c4]
+- Updated dependencies [ff87792]
+- Updated dependencies [3f023b2]
+- Updated dependencies [da576c3]
+- Updated dependencies [8eb6686]
+- Updated dependencies [f72b185]
+- Updated dependencies [ae6641d]
+- Updated dependencies [99ef1a7]
+- Updated dependencies [0c045f9]
+- Updated dependencies [c87c4a3]
+- Updated dependencies [15368e8]
+- Updated dependencies [2b9f72c]
+- Updated dependencies [b05b489]
+- Updated dependencies [1ba3adc]
+- Updated dependencies [1c8fc74]
+- Updated dependencies [89c3fe2]
+- Updated dependencies [e797869]
+- Updated dependencies [5e6feaa]
+- Updated dependencies [3d9f9c2]
+- Updated dependencies [f433bc2]
+- Updated dependencies [26ab2ad]
+- Updated dependencies [11fd15c]
+- Updated dependencies [ac40b0b]
+- Updated dependencies [ff58a7d]
+- Updated dependencies [1dee798]
+- Updated dependencies [ab983d4]
+- Updated dependencies [be43435]
+- Updated dependencies [c69aa51]
+  - @chugsplash/core@0.9.0
+  - @chugsplash/contracts@0.7.0
+
+## 0.13.0
+
+### Minor Changes
+
+- 3da5ee8: Add meta upgrades to ChugSplashRegistry
+
+### Patch Changes
+
+- 3e923a0: Change implementation salt and skip deploying implementation if it's already been deployed
+- 22c24d2: Add support for parallel execution
+- 35c7a63: Add meta upgrades for root ChugSplashManager
+- Updated dependencies [3b382d9]
+- Updated dependencies [3da5ee8]
+- Updated dependencies [ecef09e]
+- Updated dependencies [3e923a0]
+- Updated dependencies [c76142e]
+- Updated dependencies [22c24d2]
+- Updated dependencies [35c7a63]
+  - @chugsplash/core@0.8.0
+  - @chugsplash/contracts@0.6.0
+  - @chugsplash/executor@0.8.0
+
+## 0.12.0
+
+### Minor Changes
+
+- 9dca319: Integrate Executor with ChugSplash Managed
+
+### Patch Changes
+
+- 5dcb7d3: Allow user to specify a previous storage layout in their ChugSplash file
+- 20f1a7e: Use JSON bundle in contract unit tests
+- 80b1a53: Refactor functions that get build info and storage layout
+- 736b859: Update contract unit tests to reflect new storage slot segment setter
+- Updated dependencies [5dcb7d3]
+- Updated dependencies [20f1a7e]
+- Updated dependencies [c8af97c]
+- Updated dependencies [44e592e]
+- Updated dependencies [9dca319]
+- Updated dependencies [80b1a53]
+- Updated dependencies [6a48dd7]
+- Updated dependencies [736b859]
+  - @chugsplash/core@0.7.0
+  - @chugsplash/contracts@0.5.2
+  - @chugsplash/executor@0.7.0
+
+## 0.11.1
+
+### Patch Changes
+
+- d30ebdf: Change the task for displaying bundles into a script
+- ca6d384: Bump contracts
+- Updated dependencies [ca6d384]
+  - @chugsplash/contracts@0.5.1
+  - @chugsplash/core@0.6.1
+  - @chugsplash/executor@0.6.1
+
+## 0.11.0
+
+### Minor Changes
+
+- fa3f420: Add support for UUPS proxies
+
+### Patch Changes
+
+- 04dba20: Update fund task to optionally automatically calculate the amount of funds to send
+- 5c6846e: Remove hard-coded chain id 31337
+- 07860e6: Add internal task for displaying bundles
+- 5ffd3cc: Fix issue where ChugSplash not initialized when executing locally
+- 1a22e72: Make OpenZeppelin proxy addresses consistent in tests
+- a9d3337: Fix bug where Hardhat chain ID wasn't being detected on localhost
+- Updated dependencies [a76efad]
+- Updated dependencies [3b13db4]
+- Updated dependencies [04dba20]
+- Updated dependencies [5c6846e]
+- Updated dependencies [263b34d]
+- Updated dependencies [fa3f420]
+- Updated dependencies [57a327d]
+  - @chugsplash/executor@0.6.0
+  - @chugsplash/core@0.6.0
+  - @chugsplash/contracts@0.5.0
+
+## 0.10.7
+
+### Patch Changes
+
+- c30b8ef: Fix bug caused by logic that gets the minimum compiler input for a bundle
+- Updated dependencies [c30b8ef]
+- Updated dependencies [90e5c0b]
+  - @chugsplash/core@0.5.6
+
+## 0.10.6
+
+### Patch Changes
+
+- 2caf51e: Change minimum compiler input logic to fix bug that generated incomplete inputs
+- Updated dependencies [2caf51e]
+  - @chugsplash/executor@0.5.5
+  - @chugsplash/core@0.5.5
+
+## 0.10.5
+
+### Patch Changes
+
+- fd98872: Update demo package to reflect latest `getContract` function
+
+## 0.10.4
+
+### Patch Changes
+
+- 4cf40e5: Bump plugins and executor versions
+- Updated dependencies [4cf40e5]
+  - @chugsplash/executor@0.5.4
+
+## 0.10.3
+
+### Patch Changes
+
+- ecfe984: Bump core and plugins versions
+- Updated dependencies [ecfe984]
+  - @chugsplash/core@0.5.3
+
+## 0.10.2
+
+### Patch Changes
+
+- 94d65b9: Bump plugins package version
+
+## 0.10.1
+
+### Patch Changes
+
+- e07b90c: Allow user to explicitly define proxy type in ChugSplash file
+- Updated dependencies [4265ae4]
+- Updated dependencies [4554d0c]
+- Updated dependencies [591e7da]
+- Updated dependencies [e56b684]
+- Updated dependencies [a892f24]
+- Updated dependencies [fd70a56]
+  - @chugsplash/contracts@0.4.3
+  - @chugsplash/core@0.5.1
+
+## 0.10.0
+
+### Minor Changes
+
+- b47a7e5: Merge in ChugSplash Foundry Library
+- 120327d: Small updates to artifacts functions exposed by the hardhat plugin.
+
+### Patch Changes
+
+- 4029daf: Change `target` to `referenceName` everywhere
+- ed17785: Removes a hack for a bug that was fixed in upstream BaseServiceV2.
+- Updated dependencies [8c88808]
+- Updated dependencies [fdb9e62]
+- Updated dependencies [dfa0381]
+- Updated dependencies [1b08f02]
+- Updated dependencies [ed17785]
+- Updated dependencies [4029daf]
+- Updated dependencies [a37d5c3]
+- Updated dependencies [b343641]
+  - @chugsplash/core@0.5.0
+  - @chugsplash/executor@0.5.3
+  - @chugsplash/contracts@0.4.2
+
+## 0.9.0
+
+### Minor Changes
+
+- 8df582d: Fix(pg): Refactor tasks to remove dependencies on hardhat
+- 0443459: Support custom transparent proxies
+
+### Patch Changes
+
+- 242c7ca: Skip funding deployment if sufficient funds have already been deposited
+- 1cbd07b: Set `strictNullChecks` to true for TypeScript
+- c379fb6: Use artifact paths object instead of inferring artifacts
+- 60d7adc: Make executors permissioned
+- f14cc8d: Add flag that allows users to skip the storage slot checker
+- 8df582d: Feat(core): Add support for local analytics
+- deca63d: Use `getNetwork` to retrieve network name
+- 89fd479: Add a '--no-withdraw' flag to the deploy task
+- 40f0d0a: Add OpenZeppelin storage slot checker
+- 2201f3a: Use `resolveNetworkName` everywhere
+- Updated dependencies [ad46bbc]
+- Updated dependencies [9edf09b]
+- Updated dependencies [042541b]
+- Updated dependencies [c8664a2]
+- Updated dependencies [57a367d]
+- Updated dependencies [1cbd07b]
+- Updated dependencies [c379fb6]
+- Updated dependencies [ba517ad]
+- Updated dependencies [2e41b30]
+- Updated dependencies [60d7adc]
+- Updated dependencies [f14cc8d]
+- Updated dependencies [8df582d]
+- Updated dependencies [deca63d]
+- Updated dependencies [cb3a70d]
+- Updated dependencies [d481925]
+- Updated dependencies [2b8af04]
+- Updated dependencies [6c07d41]
+- Updated dependencies [8df582d]
+- Updated dependencies [0443459]
+- Updated dependencies [40f0d0a]
+- Updated dependencies [2201f3a]
+  - @chugsplash/core@0.4.0
+  - @chugsplash/executor@0.5.0
+  - @chugsplash/contracts@0.4.0
+
+## 0.8.9
+
+### Patch Changes
+
+- 2267ec4: Bump versions
+- Updated dependencies [2267ec4]
+  - @chugsplash/contracts@0.3.17
+  - @chugsplash/core@0.3.24
+  - @chugsplash/executor@0.4.14
+
+## 0.8.8
+
+### Patch Changes
+
+- b70b268: Fix chugsplash-init bug where task attempted to copy from non-existent file
+- ea1b6d4: Make '@nomiclabs/hardhat-ethers' a dependency instead of devDependency
+
+## 0.8.7
+
+### Patch Changes
+
+- d6984ec: Override transaction gas prices to use EIP-1559 if supported by the network
+- Updated dependencies [7cd5e1b]
+- Updated dependencies [d6984ec]
+- Updated dependencies [532d586]
+  - @chugsplash/executor@0.4.13
+  - @chugsplash/core@0.3.23
+
+## 0.8.6
+
+### Patch Changes
+
+- 9212fae: Compile files without first cleaning the artifacts directory
+- 1cb43e7: Fix Etherscan bug that was caused by an incorrect calculation of implementation addresses
+- a60020a: Remove Infura as RPC URL service
+- 64e57d6: Better support for deploying containerized executor with Terraform
+- Updated dependencies [10f3054]
+- Updated dependencies [1cb43e7]
+- Updated dependencies [acfe88d]
+- Updated dependencies [fdf512b]
+- Updated dependencies [88e9465]
+- Updated dependencies [a60020a]
+- Updated dependencies [64e57d6]
+  - @chugsplash/contracts@0.3.16
+  - @chugsplash/core@0.3.22
+  - @chugsplash/executor@0.4.12
+
+## 0.8.5
+
+### Patch Changes
+
+- a3664d7: Add SimpleStorage contract to plugins
+- bb241f5: Update tutorial to use UserChugSplashConfig
+- d843707: Expand test coverage to include contract references
+- baf3ac1: Changes contract reference syntax from '!Ref' to '{{ }}'
+- 89cd352: feat(core): support bytes/strings (length >31)
+- dba31f7: Write canonical config to file system when using executing bundles locally
+- 4c04d0a: Add chugsplash-init Hardhat task
+- c9eeb47: Make configPath a normal parameter on all tasks
+- Updated dependencies [74a61c0]
+- Updated dependencies [2dbf187]
+- Updated dependencies [3ec7a05]
+- Updated dependencies [baf3ac1]
+- Updated dependencies [89cd352]
+- Updated dependencies [dba31f7]
+- Updated dependencies [c9eeb47]
+  - @chugsplash/contracts@0.3.15
+  - @chugsplash/core@0.3.21
+  - @chugsplash/executor@0.4.11
+
 ## 0.8.4
 
 ### Patch Changes

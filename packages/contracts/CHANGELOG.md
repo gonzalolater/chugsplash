@@ -1,5 +1,155 @@
 # @chugsplash/contracts
 
+## 0.7.2
+
+### Patch Changes
+
+- bf7fe7f: Fix artifact import path
+
+## 0.7.1
+
+### Patch Changes
+
+- 08f312f: Include dependency artifacts in package
+
+## 0.7.0
+
+### Minor Changes
+
+- ea4bc1e: Add a protocol fee to be collected during execution
+- c319493: Deploy contracts before modifying proxies during execution
+- e5b9f81: Add ChugSplashClaimer which will exist on L1
+- d652952: Use create3 to deploy non-proxy contracts
+- d2f9fae: Add local adapter contract
+- 57cd798: Make ChugSplash non-upgradeable
+- 34790fa: Add helper function on ChugSplashManager to execute entire bundle in one transaction
+- 1ba3adc: Make contract execution atomic
+- 1c8fc74: Support rollbacks in the contracts
+- e797869: Add claimer field to config
+- ac40b0b: Require that proposers are approved by the project owner
+
+### Patch Changes
+
+- b8952d1: Remove TODOs in the ChugSplashManager
+- 1ac2ebd: Optimize gas in contract for loops
+- 49a4934: Support arbitrary contract calls from the ManagedService contract
+- ddbea87: Add Semver versioning to ChugSplashManager
+- 28e807d: Fix incorrect fee calculation
+- c309331: Add organization ID
+- 73277b5: Add reentrancy guards to the bundle initiation and completion functions
+- 491683b: Move `adapter.initiateExecution` function into the corresponding function in the ChugSplashManager
+- 9fccb34: Merge execution functions in the ChugSplashManager
+- 992e2fb: Resolve build info files automatically
+- c2712bf: Allow executor to withdraw specified amount of debt
+- 69dcfba: Add support for opt-in manager upgrades
+- aa7051a: Skip deploying a contract if it already exists
+- b41ec91: Remove unnecessary receive and fallback functions in updater contracts
+- b204c6e: Allow bundles to be proposed after being completed or cancelled
+- ff87792: Fix behavior of contracts deployed using Create3
+- da576c3: Split UUPS adapter into ownable and access control adapters
+- f72b185: Use general Create2 contract
+- ae6641d: Add propoer address to bundle proposed event
+- 99ef1a7: Allow configurable system owner
+- 0c045f9: Remove Optimism-specific logic for tx.gasprice in ChugSplashManager
+- c87c4a3: Resolve slither warnings
+- 15368e8: Add PermissionedCaller contract
+- 2b9f72c: Check that the bundle has been initiated in the `executeActions` function
+- b05b489: Replace TODOs with Linear tickets
+- 5e6feaa: Improve gas estimation on-chain
+- 3d9f9c2: Add support for deploying stateless non-proxied contracts
+- f433bc2: Remove claimer from config and registry
+- 11fd15c: Make chugsplash-deploy task execute locally by default
+
+## 0.6.0
+
+### Minor Changes
+
+- 3da5ee8: Add meta upgrades to ChugSplashRegistry
+
+### Patch Changes
+
+- 3e923a0: Change implementation salt and skip deploying implementation if it's already been deployed
+- c76142e: Remove contract unit tests until ChugSplash contracts stabilize
+- 35c7a63: Add meta upgrades for root ChugSplashManager
+
+## 0.5.2
+
+### Patch Changes
+
+- 20f1a7e: Use JSON bundle in contract unit tests
+- c8af97c: Update `setStorage` function to set only a segment of a storage slot
+- 736b859: Update contract unit tests to reflect new storage slot segment setter
+
+## 0.5.1
+
+### Patch Changes
+
+- ca6d384: Bump contracts
+
+## 0.5.0
+
+### Minor Changes
+
+- fa3f420: Add support for UUPS proxies
+
+### Patch Changes
+
+- 263b34d: Add logic for claiming bundles
+- 57a327d: Temporarily allow anyone to propose bundles
+
+## 0.4.3
+
+### Patch Changes
+
+- 4265ae4: Bump chugsplash salt value
+- 4554d0c: Make `ChugSplashManagerProxy` address stable by removing dependency on `ChugSplashRegistry`'s bytecode
+- 591e7da: improve transparent proxy test names
+
+## 0.4.2
+
+### Patch Changes
+
+- 4029daf: Change `target` to `referenceName` everywhere
+
+## 0.4.1
+
+### Patch Changes
+
+- 5a135ec: Fix issue verifying ChugSplash contracts
+
+## 0.4.0
+
+### Minor Changes
+
+- 0443459: Support custom transparent proxies
+
+### Patch Changes
+
+- 60d7adc: Make executors permissioned
+- 40f0d0a: Add OpenZeppelin storage slot checker
+
+## 0.3.17
+
+### Patch Changes
+
+- 2267ec4: Bump versions
+
+## 0.3.16
+
+### Patch Changes
+
+- 10f3054: Use `tx.gasprice` instead of `block.basefee`
+- fdf512b: Adds a universal salt that makes it easy to deploy new versions of the ChugSplash contracts
+- 88e9465: Update owner multisig address
+- a60020a: Remove Infura as RPC URL service
+
+## 0.3.15
+
+### Patch Changes
+
+- 74a61c0: Change deployment process so that ChugSplash addresses are calculated based on multisig address
+- 3ec7a05: Announce events with data on the ChugSplashRegistry
+
 ## 0.3.14
 
 ### Patch Changes

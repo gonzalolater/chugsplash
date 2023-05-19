@@ -1,28 +1,53 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.15;
 
-import { IProxyAdapter } from "../IProxyAdapter.sol";
-import { Proxy } from "../libraries/Proxy.sol";
+import { IProxyAdapter } from "../interfaces/IProxyAdapter.sol";
+import { IProxyUpdater } from "../interfaces/IProxyUpdater.sol";
+import { Proxy } from "@eth-optimism/contracts-bedrock/contracts/universal/Proxy.sol";
 
 /**
  * @title DefaultAdapter
- * @notice Adapter for an OpenZeppelin Transparent Upgradeable proxy. This is the adapter used by
- *         default proxies in the ChugSplash system. To learn more about the transparent proxy
- *         pattern, see: https://docs.openzeppelin.com/contracts/4.x/api/proxy#transparent_proxy
+ * @notice Adapter for the default EIP-1967 proxy used by ChugSplash.
  */
 contract DefaultAdapter is IProxyAdapter {
     /**
-     * @inheritdoc IProxyAdapter
+     * @notice Address of the ProxyUpdater contract that will be set as the proxy's implementation
+    during the deployment.
      */
-    function getProxyImplementation(address payable _proxy) external returns (address) {
-        return Proxy(_proxy).implementation();
+    address public immutable proxyUpdater;
+
+    /**
+     * @param _proxyUpdater Address of the ProxyUpdater contract.
+     */
+    constructor(address _proxyUpdater) {
+        require(_proxyUpdater != address(0), "DefaultAdapter: updater cannot be address(0)");
+        proxyUpdater = _proxyUpdater;
     }
 
     /**
      * @inheritdoc IProxyAdapter
      */
-    function upgradeProxyTo(address payable _proxy, address _implementation) external {
+    function initiateUpgrade(address payable _proxy) external {
+        Proxy(_proxy).upgradeTo(proxyUpdater);
+    }
+
+    /**
+     * @inheritdoc IProxyAdapter
+     */
+    function finalizeUpgrade(address payable _proxy, address _implementation) external {
         Proxy(_proxy).upgradeTo(_implementation);
+    }
+
+    /**
+     * @inheritdoc IProxyAdapter
+     */
+    function setStorage(
+        address payable _proxy,
+        bytes32 _key,
+        uint8 _offset,
+        bytes memory _value
+    ) external {
+        IProxyUpdater(_proxy).setStorage(_key, _offset, _value);
     }
 
     /**

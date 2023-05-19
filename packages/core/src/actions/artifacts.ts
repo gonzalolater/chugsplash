@@ -1,201 +1,169 @@
-import { remove0x } from '@eth-optimism/core-utils'
-import { utils } from 'ethers'
+import { ethers } from 'ethers'
+import {
+  ProxyABI,
+  ProxyArtifact,
+  buildInfo as chugsplashBuildInfo,
+} from '@chugsplash/contracts'
 
-import { ParsedChugSplashConfig } from '../config'
+import { ConfigArtifacts, ParsedChugSplashConfig } from '../config/types'
+import {
+  CompilerOutput,
+  SolidityStorageLayout,
+} from '../languages/solidity/types'
+import {
+  writeDeploymentFolderForNetwork,
+  getConstructorArgs,
+  writeDeploymentArtifact,
+  getChugSplashManagerAddress,
+} from '../utils'
 
-export const getCreationCodeWithConstructorArgs = (
-  bytecode: string,
+import 'core-js/features/array/at'
+
+/**
+ * Gets the storage layout for a contract.
+ *
+ * @param contractFullyQualifiedName Fully qualified name of the contract.
+ * @param artifactFolder Relative path to the folder where artifacts are stored.
+ * @return Storage layout object from the compiler output.
+ */
+export const getStorageLayout = (
+  compilerOutput: CompilerOutput,
+  sourceName: string,
+  contractName: string
+): SolidityStorageLayout => {
+  const contractOutput = compilerOutput.contracts[sourceName][contractName]
+
+  // Foundry artifacts do not contain the storage layout field for contracts which have no storage.
+  // So we default to an empty storage layout in this case for consistency.
+  return contractOutput.storageLayout ?? { storage: [], types: {} }
+}
+
+export const getDeployedBytecode = async (
+  provider: ethers.providers.JsonRpcProvider,
+  address: string
+): Promise<string> => {
+  const deployedBytecode = await provider.getCode(address)
+  return deployedBytecode
+}
+
+export const writeDeploymentArtifacts = async (
+  provider: ethers.providers.Provider,
   parsedConfig: ParsedChugSplashConfig,
-  referenceName: string,
-  abi: any,
-  compilerOutput: any,
-  sourceName: string,
-  contractName: string
-): string => {
-  const { constructorArgTypes, constructorArgValues } = getConstructorArgs(
-    parsedConfig,
-    referenceName,
-    abi,
-    compilerOutput,
-    sourceName,
-    contractName
+  deploymentEvents: ethers.Event[],
+  networkName: string,
+  deploymentFolderPath: string,
+  configArtifacts: ConfigArtifacts
+) => {
+  writeDeploymentFolderForNetwork(networkName, deploymentFolderPath)
+
+  const managerAddress = getChugSplashManagerAddress(
+    parsedConfig.options.organizationID
   )
 
-  const creationCodeWithConstructorArgs = bytecode.concat(
-    remove0x(
-      utils.defaultAbiCoder.encode(constructorArgTypes, constructorArgValues)
-    )
-  )
-
-  return creationCodeWithConstructorArgs
-}
-
-export const getConstructorArgs = (
-  parsedConfig: ParsedChugSplashConfig,
-  referenceName: string,
-  abi: any,
-  compilerOutput: any,
-  sourceName: string,
-  contractName: string
-): { constructorArgTypes: any[]; constructorArgValues: any[] } => {
-  const immutableReferences =
-    compilerOutput.contracts[sourceName][contractName].evm.deployedBytecode
-      .immutableReferences
-
-  const contractConfig = parsedConfig.contracts[referenceName]
-
-  const constructorFragment = abi.find(
-    (fragment) => fragment.type === 'constructor'
-  )
-  const constructorArgTypes = []
-  const constructorArgValues = []
-  if (constructorFragment === undefined) {
-    return { constructorArgTypes, constructorArgValues }
-  }
-
-  // Maps a constructor argument name to the corresponding variable name in the ChugSplash config
-  const constructorArgNamesToImmutableNames = {}
-
-  for (const source of Object.values(compilerOutput.sources)) {
-    for (const contractNode of (source as any).ast.nodes) {
-      if (
-        contractNode.nodeType === 'ContractDefinition' &&
-        contractNode.nodes !== undefined
-      ) {
-        for (const node of contractNode.nodes) {
-          if (
-            node.nodeType === 'VariableDeclaration' &&
-            node.mutability === 'immutable' &&
-            Object.keys(immutableReferences).includes(node.id.toString(10))
-          ) {
-            if (contractConfig.variables[node.name] === undefined) {
-              throw new Error(
-                `Could not find immutable variable "${node.name}" in ${referenceName}.
-Did you forget to declare it in ${parsedConfig.options.projectName}?`
-              )
-            }
-
-            const constructorArgName =
-              getConstructorArgNameForImmutableVariable(
-                contractConfig.contract,
-                contractNode.nodes,
-                node.name
-              )
-            constructorArgNamesToImmutableNames[constructorArgName] = node.name
-          }
-        }
-      }
+  for (const deploymentEvent of deploymentEvents) {
+    if (!deploymentEvent.args) {
+      throw new Error(`Deployment event has no arguments. Should never happen.`)
     }
-  }
 
-  constructorFragment.inputs.forEach((input) => {
-    constructorArgTypes.push(input.type)
-    if (constructorArgNamesToImmutableNames.hasOwnProperty(input.name)) {
-      constructorArgValues.push(
-        contractConfig.variables[
-          constructorArgNamesToImmutableNames[input.name]
-        ]
+    const receipt = await deploymentEvent.getTransactionReceipt()
+
+    if (deploymentEvent.event === 'DefaultProxyDeployed') {
+      const { metadata, storageLayout } =
+        chugsplashBuildInfo.output.contracts[
+          '@eth-optimism/contracts-bedrock/contracts/universal/Proxy.sol'
+        ]['Proxy']
+      const { devdoc, userdoc } =
+        typeof metadata === 'string'
+          ? JSON.parse(metadata).output
+          : metadata.output
+
+      // Define the deployment artifact for the proxy.
+      const proxyArtifact = {
+        address: deploymentEvent.args.proxy,
+        abi: ProxyABI,
+        transactionHash: deploymentEvent.transactionHash,
+        solcInputHash: chugsplashBuildInfo.id,
+        receipt: {
+          ...receipt,
+          gasUsed: receipt.gasUsed.toString(),
+          cumulativeGasUsed: receipt.cumulativeGasUsed.toString(),
+          // Exclude the `effectiveGasPrice` if it's undefined, which is the case on Optimism.
+          ...(receipt.effectiveGasPrice && {
+            effectiveGasPrice: receipt.effectiveGasPrice.toString(),
+          }),
+        },
+        numDeployments: 1,
+        metadata:
+          typeof metadata === 'string' ? metadata : JSON.stringify(metadata),
+        args: [managerAddress],
+        bytecode: ProxyArtifact.bytecode,
+        deployedBytecode: await provider.getCode(deploymentEvent.args.proxy),
+        devdoc,
+        userdoc,
+        storageLayout,
+      }
+
+      // Write the deployment artifact for the proxy contract.
+      writeDeploymentArtifact(
+        networkName,
+        deploymentFolderPath,
+        proxyArtifact,
+        `${deploymentEvent.args.referenceName}Proxy`
       )
-    } else {
-      throw new Error(
-        `Detected a non-immutable constructor argument, "${input.name}", in ${contractConfig.contract}.
-Please remove it or make the corresponding variable immutable.`
+    } else if (deploymentEvent.event === 'ContractDeployed') {
+      // Get the deployed contract's info.
+      const referenceName = deploymentEvent.args.referenceName
+      const { artifact, buildInfo } = configArtifacts[referenceName]
+      const { sourceName, contractName, bytecode, abi } = artifact
+      const constructorArgValues = getConstructorArgs(
+        parsedConfig.contracts[referenceName].constructorArgs,
+        abi
+      )
+      const { metadata } = buildInfo.output.contracts[sourceName][contractName]
+      const storageLayout = getStorageLayout(
+        buildInfo.output,
+        sourceName,
+        contractName
+      )
+      const { devdoc, userdoc } =
+        typeof metadata === 'string'
+          ? JSON.parse(metadata).output
+          : metadata.output
+
+      // Define the deployment artifact for the deployed contract.
+      const contractArtifact = {
+        address: deploymentEvent.args.contractAddress,
+        abi,
+        transactionHash: deploymentEvent.transactionHash,
+        solcInputHash: buildInfo.id,
+        receipt: {
+          ...receipt,
+          gasUsed: receipt.gasUsed.toString(),
+          cumulativeGasUsed: receipt.cumulativeGasUsed.toString(),
+          // Exclude the `effectiveGasPrice` if it's undefined, which is the case on Optimism.
+          ...(receipt.effectiveGasPrice && {
+            effectiveGasPrice: receipt.effectiveGasPrice.toString(),
+          }),
+        },
+        numDeployments: 1,
+        metadata:
+          typeof metadata === 'string' ? metadata : JSON.stringify(metadata),
+        args: constructorArgValues,
+        bytecode,
+        deployedBytecode: await provider.getCode(
+          deploymentEvent.args.contractAddress
+        ),
+        devdoc,
+        userdoc,
+        storageLayout,
+      }
+      // Write the deployment artifact for the deployed contract.
+      writeDeploymentArtifact(
+        networkName,
+        deploymentFolderPath,
+        contractArtifact,
+        referenceName
       )
     }
-  })
-
-  return { constructorArgTypes, constructorArgValues }
-}
-
-export const getNestedConstructorArg = (variableName: string, args): string => {
-  let remainingArguments = args[0]
-  while (remainingArguments !== undefined) {
-    if (remainingArguments.name !== undefined) {
-      return remainingArguments.name
-    }
-    remainingArguments = remainingArguments.arguments[0]
   }
-  throw new Error(
-    `Could not find nested constructor argument for the immutable variable ${variableName}.
-Please report this error.`
-  )
-}
-
-export const getConstructorArgNameForImmutableVariable = (
-  contractName: string,
-  nodes: any,
-  variableName: string
-): string => {
-  for (const node of nodes) {
-    if (node.kind === 'constructor') {
-      for (const statement of node.body.statements) {
-        if (statement.expression.nodeType === 'FunctionCall') {
-          throw new Error(
-            `Please remove the "${statement.expression.expression.name}" call in the constructor for ${contractName}.`
-          )
-        } else if (statement.expression.nodeType !== 'Assignment') {
-          throw new Error(
-            `disallowed statement in constructor for ${contractName}: ${statement.expression.nodeType}`
-          )
-        }
-        if (statement.expression.leftHandSide.name === variableName) {
-          if (typeof statement.expression.rightHandSide.name === 'string') {
-            return statement.expression.rightHandSide.name
-          } else if (
-            statement.expression.rightHandSide.kind === 'typeConversion'
-          ) {
-            return getNestedConstructorArg(
-              variableName,
-              statement.expression.rightHandSide.arguments
-            )
-          } else {
-            throw new Error(
-              `The immutable variable "${variableName}" must be assigned directly to a
-constructor argument inside the body of the constructor in ${contractName}.`
-            )
-          }
-        }
-      }
-    }
-  }
-  throw new Error(
-    `Could not find immutable variable assignment for ${variableName}.
-Did you forget to include it in your ChugSplash config file?`
-  )
-}
-
-export const getImmutableVariables = (
-  compilerOutput: any,
-  sourceName: string,
-  contractName: string
-): string[] => {
-  const immutableReferences: {
-    [astId: number]: {
-      length: number
-      start: number
-    }[]
-  } =
-    compilerOutput.contracts[sourceName][contractName].evm.deployedBytecode
-      .immutableReferences
-
-  if (
-    immutableReferences === undefined ||
-    Object.keys(immutableReferences).length === 0
-  ) {
-    return []
-  }
-
-  const immutableVariables: string[] = []
-  for (const source of Object.values(compilerOutput.sources)) {
-    for (const contractNode of (source as any).ast.nodes) {
-      if (contractNode.nodeType === 'ContractDefinition') {
-        for (const node of contractNode.nodes) {
-          if (node.mutability === 'immutable') {
-            immutableVariables.push(node.name)
-          }
-        }
-      }
-    }
-  }
-  return immutableVariables
 }

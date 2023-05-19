@@ -1,6 +1,11 @@
+import { providers } from 'ethers'
 import { create, IPFSHTTPClient } from 'ipfs-http-client'
 
+import { ChugSplashBundles } from '../actions/types'
+import { bundleRemoteSubtask } from '../languages/solidity/compiler'
+import { callWithTimeout, computeDeploymentId } from '../utils'
 import { CanonicalChugSplashConfig } from './types'
+import { getDeployContractActions } from '../actions/bundle'
 
 export const chugsplashFetchSubtask = async (args: {
   configUri: string
@@ -44,4 +49,62 @@ export const chugsplashFetchSubtask = async (args: {
   }
 
   return config
+}
+
+export const verifyDeployment = async (
+  provider: providers.Provider,
+  configUri: string,
+  deploymentId: string,
+  ipfsUrl: string
+) => {
+  const config = await callWithTimeout<CanonicalChugSplashConfig>(
+    chugsplashFetchSubtask({ configUri, ipfsUrl }),
+    30000,
+    'Failed to fetch config file from IPFS'
+  )
+
+  const { actionBundle, targetBundle } = await bundleRemoteSubtask({
+    provider,
+    canonicalConfig: config,
+  })
+
+  if (
+    deploymentId !==
+    computeDeploymentId(
+      actionBundle.root,
+      targetBundle.root,
+      actionBundle.actions.length,
+      targetBundle.targets.length,
+      getDeployContractActions(actionBundle).length,
+      configUri
+    )
+  ) {
+    throw new Error(
+      'Deployment ID generated from downloaded config does NOT match given hash. Please report this error.'
+    )
+  }
+}
+
+/**
+ * Compiles a remote ChugSplashBundle from a uri.
+ *
+ * @param configUri URI of the ChugSplashBundle to compile.
+ * @param provider JSON RPC provider.
+ * @returns Compiled ChugSplashBundle.
+ */
+export const compileRemoteBundles = async (
+  provider: providers.Provider,
+  configUri: string
+): Promise<{
+  bundles: ChugSplashBundles
+  canonicalConfig: CanonicalChugSplashConfig
+}> => {
+  const canonicalConfig = await callWithTimeout<CanonicalChugSplashConfig>(
+    chugsplashFetchSubtask({ configUri }),
+    30000,
+    'Failed to fetch config file from IPFS'
+  )
+
+  const bundles = await bundleRemoteSubtask({ provider, canonicalConfig })
+  return { bundles, canonicalConfig }
 }

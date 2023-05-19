@@ -1,5 +1,321 @@
 # @chugsplash/core
 
+## 0.9.0
+
+### Minor Changes
+
+- c319493: Deploy contracts before modifying proxies during execution
+- c309331: Add organization ID
+- 57cd798: Make ChugSplash non-upgradeable
+- e797869: Add claimer field to config
+- 11fd15c: Make chugsplash-deploy task execute locally by default
+- ac40b0b: Require that proposers are approved by the project owner
+
+### Patch Changes
+
+- 7ee54af: Assert that the block gas limit is at least 15 million
+- 5896c7c: Remove unused `getMinimumSourceNames` function
+- 1c5e99a: Add support for async config files
+- c43c960: Add input validation for config variables
+- ea4bc1e: Add a protocol fee to be collected during execution
+- 41f420c: Allow function types in contracts
+- 06c9af9: Only initialize ChugSplash on local networks
+- e2392ad: Update remoteExecution parameter to only be true when proposing on a live network
+- d7dc1ba: Resolve inherited private variable conflicts
+- fb9442a: Add support for user defined types
+- 0ef343d: Write artifacts for proxy and implementation contracts
+- e5b9f81: Add ChugSplashClaimer which will exist on L1
+- 2a0939a: Separate local canonical config files by network
+- b7e779f: Assert that the contracts in the config are below the contract size limit
+- d652952: Use create3 to deploy non-proxy contracts
+- 9fccb34: Merge execution functions in the ChugSplashManager
+- a26ab46: Validate usage of the preserve keyword
+- ed81039: Assert block gas limit is sufficiently high in parsing logic
+- bf1fde7: Add parsing and validation on constructor arugments
+- 1d54d12: Add support for flexible constructors and mutable constructor arguments
+- dffa427: Fix bug encoding address payable
+- f1cf9ac: Fix bug parsing proxied config variables
+- c2712bf: Allow executor to withdraw specified amount of debt
+- d540efc: Change documentation for mapping value label
+- 69dcfba: Add support for opt-in manager upgrades
+- fba0fa0: Add `isDataHexString` helper function
+- cccb052: Ensure storageLayout field is never undefined
+- b204c6e: Allow bundles to be proposed after being completed or cancelled
+- 1eeba58: Assert valid bundle size
+- 02220c4: Add { gap } keyword
+- ff87792: Fix behavior of contracts deployed using Create3
+- 3f023b2: Restrict Solidity versions to >0.5.x
+- da576c3: Split UUPS adapter into ownable and access control adapters
+- 8eb6686: Add support for other OpenZeppelin storage safety check options
+- f72b185: Use general Create2 contract
+- 99ef1a7: Allow configurable system owner
+- b05b489: Replace TODOs with Linear tickets
+- 1ba3adc: Make contract execution atomic
+- 89c3fe2: Support contract references in constructor arguments
+- 3d9f9c2: Add support for deploying stateless non-proxied contracts
+- f433bc2: Remove claimer from config and registry
+- 26ab2ad: Get previous storage layout using OpenZeppelin's format
+- ff58a7d: Add support for struct constructor args
+- 1dee798: Fixes a couple errors when deploying no-proxy contracts
+- ab983d4: Refactor encoding logic into separate encoding and parsing processes
+- be43435: Change proxy ownership transfer tasks to remove ambiguity
+- c69aa51: Remove extra CLI tasks
+- Updated dependencies [b8952d1]
+- Updated dependencies [ea4bc1e]
+- Updated dependencies [1ac2ebd]
+- Updated dependencies [49a4934]
+- Updated dependencies [ddbea87]
+- Updated dependencies [c319493]
+- Updated dependencies [28e807d]
+- Updated dependencies [c309331]
+- Updated dependencies [73277b5]
+- Updated dependencies [491683b]
+- Updated dependencies [e5b9f81]
+- Updated dependencies [d652952]
+- Updated dependencies [9fccb34]
+- Updated dependencies [d2f9fae]
+- Updated dependencies [992e2fb]
+- Updated dependencies [c2712bf]
+- Updated dependencies [69dcfba]
+- Updated dependencies [57cd798]
+- Updated dependencies [aa7051a]
+- Updated dependencies [b41ec91]
+- Updated dependencies [34790fa]
+- Updated dependencies [b204c6e]
+- Updated dependencies [ff87792]
+- Updated dependencies [da576c3]
+- Updated dependencies [f72b185]
+- Updated dependencies [ae6641d]
+- Updated dependencies [99ef1a7]
+- Updated dependencies [0c045f9]
+- Updated dependencies [c87c4a3]
+- Updated dependencies [15368e8]
+- Updated dependencies [2b9f72c]
+- Updated dependencies [b05b489]
+- Updated dependencies [1ba3adc]
+- Updated dependencies [1c8fc74]
+- Updated dependencies [e797869]
+- Updated dependencies [5e6feaa]
+- Updated dependencies [3d9f9c2]
+- Updated dependencies [f433bc2]
+- Updated dependencies [11fd15c]
+- Updated dependencies [ac40b0b]
+  - @chugsplash/contracts@0.7.0
+
+## 0.8.1
+
+### Patch Changes
+
+- 6b3e2ed: Fix Etherscan verification constructor args
+- 6b3e2ed: Fix contract verification constructor args
+
+## 0.8.0
+
+### Minor Changes
+
+- 3da5ee8: Add meta upgrades to ChugSplashRegistry
+
+### Patch Changes
+
+- 3b382d9: Remove filesystem calls that were used during debugging
+- ecef09e: Improve executor retry policy
+- 3e923a0: Change implementation salt and skip deploying implementation if it's already been deployed
+- 22c24d2: Add support for parallel execution
+- 35c7a63: Add meta upgrades for root ChugSplashManager
+- Updated dependencies [3da5ee8]
+- Updated dependencies [3e923a0]
+- Updated dependencies [c76142e]
+- Updated dependencies [35c7a63]
+  - @chugsplash/contracts@0.6.0
+
+## 0.7.0
+
+### Minor Changes
+
+- 9dca319: Integrate Executor with ChugSplash Managed
+
+### Patch Changes
+
+- 5dcb7d3: Allow user to specify a previous storage layout in their ChugSplash file
+- c8af97c: Update `setStorage` function to set only a segment of a storage slot
+- 44e592e: Add the 'preserve' keyword that allows variables to be maintained across upgrades
+- 80b1a53: Refactor functions that get build info and storage layout
+- 6a48dd7: Remove circular dependencies
+- 736b859: Update contract unit tests to reflect new storage slot segment setter
+- Updated dependencies [20f1a7e]
+- Updated dependencies [c8af97c]
+- Updated dependencies [736b859]
+  - @chugsplash/contracts@0.5.2
+
+## 0.6.1
+
+### Patch Changes
+
+- ca6d384: Bump contracts
+- Updated dependencies [ca6d384]
+  - @chugsplash/contracts@0.5.1
+
+## 0.6.0
+
+### Minor Changes
+
+- 3b13db4: Set immutable variables in the ChugSplash file via the 'constructorArgs' field
+- fa3f420: Add support for UUPS proxies
+
+### Patch Changes
+
+- 04dba20: Update fund task to optionally automatically calculate the amount of funds to send
+- 5c6846e: Remove hard-coded chain id 31337
+- 263b34d: Add logic for claiming bundles
+- 57a327d: Temporarily allow anyone to propose bundles
+- Updated dependencies [263b34d]
+- Updated dependencies [fa3f420]
+- Updated dependencies [57a327d]
+  - @chugsplash/contracts@0.5.0
+
+## 0.5.6
+
+### Patch Changes
+
+- c30b8ef: Fix bug caused by logic that gets the minimum compiler input for a bundle
+- 90e5c0b: Move the 'missing storage layout error' from `getStorageLayout` to `getBuildInfo`
+
+## 0.5.5
+
+### Patch Changes
+
+- 2caf51e: Change minimum compiler input logic to fix bug that generated incomplete inputs
+
+## 0.5.4
+
+### Patch Changes
+
+- ca130bd: Bump @eth-optimism-commonts dependency version
+
+## 0.5.3
+
+### Patch Changes
+
+- ecfe984: Bump core and plugins versions
+
+## 0.5.2
+
+### Patch Changes
+
+- f38d444: Bump core package version
+
+## 0.5.1
+
+### Patch Changes
+
+- e56b684: Fix external proxy type validation bug
+- a892f24: Slightly change wording in error messages
+- fd70a56: Add recommendation to clear contract artifacts if variable not found in storage layout
+- Updated dependencies [4265ae4]
+- Updated dependencies [4554d0c]
+- Updated dependencies [591e7da]
+  - @chugsplash/contracts@0.4.3
+
+## 0.5.0
+
+### Minor Changes
+
+- b343641: Small rename, getFinalDeploymentTxnHash => getBundleCompletionTxnHash.
+
+### Patch Changes
+
+- 8c88808: Minor improvement to config error string.
+- dfa0381: Throw an error if immutable variable value is defined in both the contract and config file
+- 1b08f02: Updates ether formatting strings to four decimals in most places.
+- 4029daf: Change `target` to `referenceName` everywhere
+- a37d5c3: Add discord link to output
+- Updated dependencies [4029daf]
+  - @chugsplash/contracts@0.4.2
+
+## 0.4.2
+
+### Patch Changes
+
+- 68c1a56: Remove `initializeChugSplash` call in register and propose task
+
+## 0.4.1
+
+### Patch Changes
+
+- 48088b2: Add timeout on analytics functions
+
+## 0.4.0
+
+### Minor Changes
+
+- 8df582d: Fix(pg): Refactor tasks to remove dependencies on hardhat
+- 0443459: Support custom transparent proxies
+
+### Patch Changes
+
+- ad46bbc: Change error messages so that they don't infer network name
+- 042541b: Remove unnecessary TODO
+- c8664a2: Check if proxy is deployed before transferring to ChugSplash
+- 57a367d: Fix issue where executor always tries to execute locally
+- 1cbd07b: Set `strictNullChecks` to true for TypeScript
+- c379fb6: Use artifact paths object instead of inferring artifacts
+- ba517ad: Ensure Array.at() is always supported
+- 2e41b30: Fix bug caused by iterating over empty AST node object
+- 60d7adc: Make executors permissioned
+- f14cc8d: Add flag that allows users to skip the storage slot checker
+- 8df582d: Feat(core): Add support for local analytics
+- deca63d: Use `getNetwork` to retrieve network name
+- cb3a70d: Improve spinner timing
+- d481925: Add foundry specific messages
+- 2b8af04: Change EIP-1967 proxy implementation getter to be compatible with OpenZeppelin contracts
+- 6c07d41: Display contract name instead of fully qualified name in deployment table
+- 40f0d0a: Add OpenZeppelin storage slot checker
+- 2201f3a: Use `resolveNetworkName` everywhere
+- Updated dependencies [60d7adc]
+- Updated dependencies [0443459]
+- Updated dependencies [40f0d0a]
+  - @chugsplash/contracts@0.4.0
+
+## 0.3.24
+
+### Patch Changes
+
+- 2267ec4: Bump versions
+- Updated dependencies [2267ec4]
+  - @chugsplash/contracts@0.3.17
+
+## 0.3.23
+
+### Patch Changes
+
+- d6984ec: Override transaction gas prices to use EIP-1559 if supported by the network
+
+## 0.3.22
+
+### Patch Changes
+
+- 1cb43e7: Fix Etherscan bug that was caused by an incorrect calculation of implementation addresses
+- acfe88d: Improve execution cost estimation
+- fdf512b: Adds a universal salt that makes it easy to deploy new versions of the ChugSplash contracts
+- Updated dependencies [10f3054]
+- Updated dependencies [fdf512b]
+- Updated dependencies [88e9465]
+- Updated dependencies [a60020a]
+  - @chugsplash/contracts@0.3.16
+
+## 0.3.21
+
+### Patch Changes
+
+- 74a61c0: Change deployment process so that ChugSplash addresses are calculated based on multisig address
+- baf3ac1: Changes contract reference syntax from '!Ref' to '{{ }}'
+- 89cd352: feat(core): support bytes/strings (length >31)
+- dba31f7: Write canonical config to file system when using executing bundles locally
+- c9eeb47: Make configPath a normal parameter on all tasks
+- Updated dependencies [74a61c0]
+- Updated dependencies [3ec7a05]
+  - @chugsplash/contracts@0.3.15
+
 ## 0.3.20
 
 ### Patch Changes
