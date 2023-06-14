@@ -1,5 +1,26 @@
 # @chugsplash/plugins
 
+## 0.15.1
+
+### Patch Changes
+
+- f13070f: Use Optimism contracts-bedrock package canary version in all ChugSplash packages
+- Updated dependencies [f13070f]
+  - @chugsplash/core@0.10.1
+
+## 0.15.0
+
+### Minor Changes
+
+- 6b975e7: Bump contracts dependency version
+
+### Patch Changes
+
+- 1dafc2c: Add support for mapping keys that are contract or enum types
+- Updated dependencies [1dafc2c]
+- Updated dependencies [6b975e7]
+  - @chugsplash/core@0.10.0
+
 ## 0.14.1
 
 ### Patch Changes
