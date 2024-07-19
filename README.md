@@ -1,71 +1,152 @@
-# ChugSplash
+# Sphinx: DevOps for Deployments
 
-A declarative and deterministic framework for deploying and upgrading smart contracts. Available for both Hardhat and Foundry.
+Sphinx is an automated smart contract deployment platform for Foundry. Key features include gasless deployments, one-click multi-chain deployments, and deployments in CI. You can integrate Sphinx with minimal changes to your existing Forge scripts.
 
-Powers the [ChugSplash Managed Service](https://www.chugsplash.io).
+Deployments with Sphinx are a three-step process:
+1. **Propose**: Initiate the deployment from your command line or CI process by submitting the transactions to Sphinx's backend.
+2. **Approve**: Your Gnosis Safe owner(s) approve the deployment by signing a single meta transaction in the Sphinx UI.
+3. **Execute**: Sphinx's backend trustlessly executes the deployment through your Gnosis Safe.
 
-> **WARNING**: The code and contracts ChugSplash uses to deploy and upgrade your contracts HAVE NOT been audited. ChugSplash is a BETA product undergoing significant active development. ChugSplash's behavior and APIs are subject to change at any time at our discretion. You should not use ChugSplash if you would be very upset with your project breaking without notice. We make no guarantees about the safety of any contract deployments using the ChugSplash system.
+## Key features:
 
-If you want to use ChugSplash in production, ask a question, or request a feature then we'd love to hear from you in the [Discord!](https://discord.gg/7Gc3DK33Np)
+* **Gasless Deployments**: You don't need to worry about securing a funded private key or getting native gas tokens on any chain. We'll bill you in fiat after your deployment is finished. Deployments on testnets are completely free.
 
-## Features
+* **One-Click Multichain Deployments**: Approve deployments across dozens of networks by signing a single meta transaction. Sphinx's backend will deploy on each network in parallel and verify your smart contracts on block explorers.
 
-### ChugSplash Core Protocol
-The Core Protocol includes smart contracts as well as Hardhat and Foundry plugins. All of the code is MIT licensed and is located inside this repository.
-- Define deployments and upgrades [declaratively](https://github.com/chugsplash/chugsplash/blob/develop/docs/chugsplash-file.md#layout-of-a-chugsplash-file) in a single file, inspired by [Terraform](https://www.terraform.io/).
-- Deployments are fully atomic, deterministic, and idempotent. Deployments cannot be halted for any reason and are finalized in a single transaction.
-- Removes the need for initializer functions in your upgradeable contracts
-- Built-in storage layout safety checker
-- Deploys contracts at consistent addresses across networks using `CREATE2`
-- Keep track of contract dependencies using simple template syntax (i.e. `{{ MyContract }}`).
-- Generates deployment artifacts in the same format as hardhat-deploy
-- Compatible with contracts deployed using the [OpenZeppelin Hardhat Upgrades API](https://docs.openzeppelin.com/upgrades-plugins/1.x/api-hardhat-upgrades) including both Transparent and UUPS proxies.
+* **Deployments in CI**: Eliminate human error and improve security by gaslessly triggering deployments from your CI process. You can always propose from your local machine if you'd prefer.
 
-### [ChugSplash Managed Service](https://www.chugsplash.io)
-The ChugSplash Managed Service is an optional product built on top of the ChugSplash Core Protocol designed to provide more advanced DevOps functionality for smart contract development teams.
-- Manage projects, contracts, and deployments in a UI
-- Approve deployments/upgrades with a single transaction through the UI
-- Easy CI integration. Gaslessly propose upgrades to your contracts from your CI process. Upgrades are executed after your approval.
-- Automatic Etherscan verification
+* **Deploy via Gnosis Safe**: The Sphinx protocol is a [Gnosis Safe Module](https://docs.safe.global/safe-smart-account/modules) designed for deployments. With the Sphinx Module, your Gnosis Safe owners can approve multi-chain deployments by signing a single meta transaction. Sphinx will deploy a Gnosis Safe on your behalf at a consistent address using `CREATE2`.
 
-## Getting Started
+* **Trustless**: It's impossible to execute anything your Gnosis Safe owners have not explicitly approved. Spearbit has audited our system; see our audit report [here](https://github.com/sphinx-labs/sphinx/blob/main/audit/spearbit.pdf).
 
-### Foundry
-[Get started with ChugSplash for Foundry](https://github.com/chugsplash/chugsplash/blob/develop/docs/foundry/getting-started.md)
+* **Compatible with Forge Scripts**: You can integrate Sphinx by adding a few lines of code to your existing Forge scripts.
 
-### Hardhat
-[Get started with ChugSplash for Hardhat](https://github.com/chugsplash/chugsplash/blob/develop/docs/hardhat/setup-project.md)
+* **Deployment Artifact Management**: Sphinx generates and stores deployment artifacts, which can be retrieved at any time.
+
+* **Contract Verification**: Sphinx automatically verifies contracts on block explorers with no configuration necessary.
+
+* **No Lock-In**: You can execute deployments from your local machine without using the Sphinx DevOps Platform. These deployments are executed in the exact same manner as they would be executed with the DevOps Platform, including identical contract addresses. This includes networks that the DevOps Platform doesn't currently support.
+
+## Self Hosting
+Sphinx is designed to be used with the [Sphinx Platform](https://github.com/sphinx-labs/sphinx-platform) which you must host yourself. You can find information on running the Sphinx Platform locally and recommendations for hosting in the [Sphinx Platform documentation](https://github.com/sphinx-labs/sphinx-platform/blob/main/docs).
+
+## Pricing
+
+Sphinx is free and open source. You must host the Sphinx platform yourself to be able to use it.
+
+## Demo
+
+A demo of the DevOps Platform is on the [website's landing page](https://sphinx.dev).
 
 ## Documentation
 
-- [ChugSplash File](https://github.com/chugsplash/chugsplash/blob/develop/docs/chugsplash-file.md): Detailed explanation of the file where you define your deployments and upgrades.
-- [Variables Reference](https://github.com/chugsplash/chugsplash/blob/develop/docs/variables.md): Reference describing how to assign values to every variable type in a ChugSplash config file.
-- [Using ChugSplash on Live Networks](https://github.com/chugsplash/chugsplash/blob/develop/docs/live-network.md): Instructions for using ChugSplash to deploy or upgrade a project on a live network.
-- [Integrating with CI](https://github.com/chugsplash/chugsplash/blob/develop/docs/ci-integration.md): Walkthrough of how to setup ChugSplash deployments in your CI process using GitHub actions.
-- [Special Variable Definitions](https://github.com/chugsplash/chugsplash/blob/develop/docs/special-var-defs.md): Explains how to define contract references in your ChugSplash config file, and how to preserve the values of variables during an upgrade.
-- [Immutable Variables](https://github.com/chugsplash/chugsplash/blob/develop/docs/immutable-variables.md): How to define immutable variables with ChugSplash.
-- [Storage Layout Safety Checker](https://github.com/chugsplash/chugsplash/blob/develop/docs/storage-checker.md): Explains the type of storage layout errors that ChugSplash automatically detects.
-- [Importing Contracts from the OpenZeppelin Hardhat Upgrades API](https://github.com/chugsplash/chugsplash/blob/develop/docs/import-openzeppelin.md): Upgrade your existing OpenZeppelin proxies using ChugSplash.
-- [How ChugSplash Works](https://github.com/chugsplash/chugsplash/blob/develop/docs/how-chugsplash-works.md). A deep dive into the ChugSplash Core Protocol.
+### Getting Started
 
-## Supported Networks
-* Ethereum Goerli
-* Optimism Goerli
+- [Getting Started in a New Repository](https://github.com/sphinx-labs/sphinx/blob/main/docs/cli-quickstart.md)
+- [Getting Started with an Existing Foundry Project](https://github.com/sphinx-labs/sphinx/blob/main/docs/cli-existing-project.md)
 
-ChugSplash is capable of supporting any EVM compatible network. If you'd like to use ChugSplash on network that is not listed, please let us know and we'd be happy to take care of deploying the ChugSplash contracts to it.
+### References
 
-ChugSplash is an experimental product and currently only supports test networks. If you would like to use ChugSplash in production, we'd love to work with you. Please feel free to [join the Discord](https://discord.gg/7Gc3DK33Np) and shoot us a message!
+- [Writing Deployment Scripts](https://github.com/sphinx-labs/sphinx/blob/main/docs/writing-scripts.md)
+- [CLI Propose Command](https://github.com/sphinx-labs/sphinx/blob/main/docs/cli-propose.md)
+- [Propose in CI](https://github.com/sphinx-labs/sphinx/blob/main/docs/ci-proposals.md)
+- [Configuration Options](https://github.com/sphinx-labs/sphinx/blob/main/docs/configuration-options.md)
+- [Deploy from the CLI](https://github.com/sphinx-labs/sphinx/blob/main/docs/cli-deploy.md)
+- [Troubleshooting](https://github.com/sphinx-labs/sphinx/blob/main/docs/troubleshooting-guide.md)
+- [FAQ](https://github.com/sphinx-labs/sphinx/blob/main/docs/faq.md)
+- [Architecture Overview](https://github.com/sphinx-labs/sphinx/blob/main/docs/architecture-overview.md)
 
-## Maintainers
+### Specifications
 
-[@smartcontracts](https://github.com/smartcontracts)\
+- [Introduction](https://github.com/sphinx-labs/sphinx/blob/develop/specs/introduction.md)
+- [Sphinx Merkle Tree](https://github.com/sphinx-labs/sphinx/blob/develop/specs/merkle-tree.md)
+- [`SphinxModuleProxy` Contract](https://github.com/sphinx-labs/sphinx/blob/develop/specs/sphinx-module-proxy.md)
+- [`SphinxModuleProxyFactory` Contract](https://github.com/sphinx-labs/sphinx/blob/develop/specs/sphinx-module-proxy-factory.md)
+- [`ManagedService` Contract](https://github.com/sphinx-labs/sphinx/blob/develop/specs/managed-service.md)
+
+### Security
+
+- [Spearbit Audit](https://github.com/sphinx-labs/sphinx/blob/main/audit/spearbit.pdf)
+
+## Current Limitations
+
+- You cannot deploy [libraries](https://docs.soliditylang.org/en/v0.8.24/contracts.html#libraries).
+- You can only use the [Deploy CLI Command](https://github.com/sphinx-labs/sphinx/blob/main/docs/cli-deploy.md) on live networks if your Gnosis Safe has a single owner. (Deployments with the DevOps Platform support an arbitrary number of owners).
+
+## Coming Soon
+
+- Use existing Gnosis Safes with Sphinx.
+- Pay for deployments with USDC on the DevOps Platform.
+
+Please feel free to reach out to us in our [Discord](https://discord.gg/7Gc3DK33Np) to request a feature!
+
+## Networks Supported
+The Sphinx core contracts are deployed on the following networks.
+
+- Ethereum
+- Optimism
+- Arbitrum
+- Polygon
+- Polygon zkEVM
+- BNB Smart Chain (aka BSC)
+- Gnosis Chain
+- Avalanche C-Chain
+- Linea
+- Fantom
+- Base
+- Scroll
+- Zora
+- RARI
+- Celo
+- Moonbeam
+- Moonriver
+- Fuse
+- Evmos
+- Kava
+- Rootstock
+- Blast
+- Mode
+- Mantle
+- Darwinia
+- Crab
+- Astar zkEVM
+
+Test networks:
+
+- Ethereum Sepolia
+- Optimism Sepolia
+- Arbitrum Sepolia
+- Polygon Amoy
+- Polygon zkEVM Cardona
+- BNB Smart Chain Testnet
+- Gnosis Chiado
+- Avalanche Fuji
+- Linea Sepolia
+- Fantom Testnet
+- Base Sepolia
+- Scroll Sepolia
+- Zora Sepolia
+- Rari Sepolia
+- Celo Alfajores
+- Moonbase Alpha
+- Evmos Testnet
+- Kava Testnet
+- Rootstock Testnet
+- Blast Sepolia
+- Darwinia Pangolin
+- Taiko Katla
+- Mantle Sepolia
+- Astar zKyoto
+
+## Contributors
+
+[@rpate97](https://github.com/RPate97)\
 [@sam-goldman](https://github.com/sam-goldman)\
-[@rpate97](https://github.com/RPate97)
-
-## Contributing
-
-Contributors welcome, please read through [CONTRIBUTING.md](https://github.com/chugsplash/chugsplash/blob/develop/CONTRIBUTING.md) for an overview of the contributing process for this repository and to get your development environment up and running. Then check out the list of [Good First Issues](https://github.com/chugsplash/chugsplash/contribute) to find something to work on! If you're not sure where to start, [join the Discord](https://discord.gg/7Gc3DK33Np) and shoot us a message!
+[@smartcontracts](https://github.com/smartcontracts)\
+[Wonderland](https://defi.sucks/)
 
 ## License
 
-MIT © 2022
+We use the Gnosis Safe contracts as a library. These contracts are licensed under [LGPL v3](https://github.com/safe-global/safe-contracts/blob/main/LICENSE). You can access them in [Gnosis Safe's repository](https://github.com/safe-global/safe-contracts).
+
+All other code in this repository is licensed under [MIT](https://github.com/sphinx-labs/sphinx/blob/develop/LICENSE).

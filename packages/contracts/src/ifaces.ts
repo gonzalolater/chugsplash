@@ -1,45 +1,48 @@
-import fs from 'fs'
-import path from 'path'
+import { GnosisSafeContractArtifact } from './types'
+import { parseFoundryContractArtifact } from './utils'
 
 /* eslint-disable @typescript-eslint/no-var-requires */
-export const ChugSplashRegistryArtifact = require('../artifacts/contracts/ChugSplashRegistry.sol/ChugSplashRegistry.json')
-export const ChugSplashManagerArtifact = require('../artifacts/contracts/ChugSplashManager.sol/ChugSplashManager.json')
-export const ChugSplashManagerProxyArtifact = require('../artifacts/contracts/ChugSplashManagerProxy.sol/ChugSplashManagerProxy.json')
-export const ManagedServiceArtifact = require('../artifacts/contracts/ManagedService.sol/ManagedService.json')
-export const ProxyArtifact = require('../artifacts/@eth-optimism/contracts-bedrock/contracts/universal/Proxy.sol/Proxy.json')
-export const DefaultUpdaterArtifact = require('../artifacts/contracts/updaters/DefaultUpdater.sol/DefaultUpdater.json')
-export const OZUUPSUpdaterArtifact = require('../artifacts/contracts/updaters/OZUUPSUpdater.sol/OZUUPSUpdater.json')
-export const DefaultAdapterArtifact = require('../artifacts/contracts/adapters/DefaultAdapter.sol/DefaultAdapter.json')
-export const OZUUPSOwnableAdapterArtifact = require('../artifacts/contracts/adapters/OZUUPSOwnableAdapter.sol/OZUUPSOwnableAdapter.json')
-export const OZUUPSAccessControlAdapterArtifact = require('../artifacts/contracts/adapters/OZUUPSAccessControlAdapter.sol/OZUUPSAccessControlAdapter.json')
-export const OZTransparentAdapterArtifact = require('../artifacts/contracts/adapters/OZTransparentAdapter.sol/OZTransparentAdapter.json')
-export const DefaultGasPriceCalculatorArtifact = require('../artifacts/contracts/DefaultGasPriceCalculator.sol/DefaultGasPriceCalculator.json')
-export const DefaultCreate3Artifact = require('../artifacts/contracts/DefaultCreate3.sol/DefaultCreate3.json')
-export const ForwarderArtifact = require('../artifacts/@thirdweb-dev/contracts/forwarder/Forwarder.sol/Forwarder.json')
+export const PermissionlessRelayArtifact = parseFoundryContractArtifact(
+  require('../contract-artifacts/sphinx/PermissionlessRelay.sol/PermissionlessRelay.json')
+)
+export const SphinxModuleArtifact = parseFoundryContractArtifact(
+  require('../contract-artifacts/sphinx/SphinxModule.sol/SphinxModule.json')
+)
+export const SphinxModuleProxyFactoryArtifact = parseFoundryContractArtifact(
+  require('../contract-artifacts/sphinx/SphinxModuleProxyFactory.sol/SphinxModuleProxyFactory.json')
+)
 
-const directoryPath = path.join(__dirname, '../artifacts/build-info')
-const fileNames = fs.readdirSync(directoryPath)
-if (fileNames.length !== 1) {
-  throw new Error(
-    'Did not find exactly one ChugSplash contracts build info file.'
-  )
-}
+export const ManagedServiceABI = PermissionlessRelayArtifact.abi
+export const SphinxModuleABI = SphinxModuleArtifact.abi
+export const SphinxModuleProxyFactoryABI = SphinxModuleProxyFactoryArtifact.abi
 
-export const buildInfo = require(`../artifacts/build-info/${fileNames[0]}`)
+export const sphinxBuildInfo = require(`../contract-artifacts/sphinx/build-info.json`)
+export const permissionlessRelayBuildInfo = require(`../contract-artifacts/sphinx/permissionless-relay-build-info.json`)
 
-export const ChugSplashRegistryABI = ChugSplashRegistryArtifact.abi
-export const ChugSplashManagerABI = ChugSplashManagerArtifact.abi
-export const ChugSplashManagerProxyABI = ChugSplashManagerProxyArtifact.abi
-export const ManagedServiceABI = ManagedServiceArtifact.abi
-export const ProxyABI = ProxyArtifact.abi
-export const DefaultUpdaterABI = DefaultUpdaterArtifact.abi
-export const DefaultAdapterABI = DefaultAdapterArtifact.abi
-export const OZUUPSUpdaterABI = OZUUPSUpdaterArtifact.abi
-export const OZUUPSOwnableAdapterABI = OZUUPSOwnableAdapterArtifact.abi
-export const OZUUPSAccessControlAdapterABI =
-  OZUUPSAccessControlAdapterArtifact.abi
-export const OZTransparentAdapterABI = OZTransparentAdapterArtifact.abi
-export const DefaultGasPriceCalculatorABI =
-  DefaultGasPriceCalculatorArtifact.abi
-export const DefaultCreate3ABI = DefaultCreate3Artifact.abi
-export const ForwarderABI = ForwarderArtifact.abi
+// Gnosis Safe contract artifacts. This is the exhaustive list of contracts that are deployed in the
+// deployment scripts of Gnosis Safe v1.3.0-libs.0 (commit 767ef36).
+export const SimulateTxAccessorArtifact: GnosisSafeContractArtifact = require('../contract-artifacts/gnosis-safe/v1.3.0/accessors/SimulateTxAccessor.sol/SimulateTxAccessor.json')
+export const GnosisSafeProxyFactoryArtifact: GnosisSafeContractArtifact = require('../contract-artifacts/gnosis-safe/v1.3.0/proxies/GnosisSafeProxyFactory.sol/GnosisSafeProxyFactory.json')
+export const DefaultCallbackHandlerArtifact: GnosisSafeContractArtifact = require('../contract-artifacts/gnosis-safe/v1.3.0/handler/DefaultCallbackHandler.sol/DefaultCallbackHandler.json')
+export const CompatibilityFallbackHandlerArtifact: GnosisSafeContractArtifact = require('../contract-artifacts/gnosis-safe/v1.3.0/handler/CompatibilityFallbackHandler.sol/CompatibilityFallbackHandler.json')
+export const CreateCallArtifact: GnosisSafeContractArtifact = require('../contract-artifacts/gnosis-safe/v1.3.0/libraries/CreateCall.sol/CreateCall.json')
+export const MultiSendArtifact: GnosisSafeContractArtifact = require('../contract-artifacts/gnosis-safe/v1.3.0/libraries/MultiSend.sol/MultiSend.json')
+export const MultiSendCallOnlyArtifact: GnosisSafeContractArtifact = require('../contract-artifacts/gnosis-safe/v1.3.0/libraries/MultiSendCallOnly.sol/MultiSendCallOnly.json')
+export const SignMessageLibArtifact: GnosisSafeContractArtifact = require('../contract-artifacts/gnosis-safe/v1.3.0/libraries/SignMessageLib.sol/SignMessageLib.json')
+export const GnosisSafeL2Artifact: GnosisSafeContractArtifact = require('../contract-artifacts/gnosis-safe/v1.3.0/GnosisSafeL2.sol/GnosisSafeL2.json')
+export const GnosisSafeArtifact: GnosisSafeContractArtifact = require('../contract-artifacts/gnosis-safe/v1.3.0/GnosisSafe.sol/GnosisSafe.json')
+// This contract isn't deployed in Gnosis Safe's deployment scripts, but we need its bytecode in the
+// plugins package, so we include it here.
+export const GnosisSafeProxyArtifact: GnosisSafeContractArtifact = require('../contract-artifacts/gnosis-safe/v1.3.0/proxies/GnosisSafeProxy.sol/GnosisSafeProxy.json')
+
+// Get the build info file that corresponds to the Gnosis Safe contract artifacts. We'll need it to
+// verify these contracts on Etherscan.
+export const gnosisSafeBuildInfo = require('../contract-artifacts/gnosis-safe/v1.3.0/build-info.json')
+
+// Drippie contract artifacts from Optimism's repo. These are copied from the commit:
+// https://github.com/ethereum-optimism/optimism/tree/3a62bccd6c5464891d0d6282264022d240d05b60
+export const DrippieArtifact = require('../contract-artifacts/optimism/Drippie.json')
+export const CheckBalanceLowArtifact = require('../contract-artifacts/optimism/CheckBalanceLow.json')
+// Get the build info file that corresponds to the Drippie contract artifacts. We'll need it to
+// verify the Drippie contracts on Etherscan.
+export const optimismPeripheryBuildInfo = require('../contract-artifacts/optimism/build-info.json')

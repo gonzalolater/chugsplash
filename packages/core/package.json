@@ -1,7 +1,7 @@
 {
-  "name": "@chugsplash/core",
-  "version": "0.10.1",
-  "description": "ChugSplash core library",
+  "name": "@sphinx-labs/core",
+  "version": "0.26.0",
+  "description": "Sphinx core library",
   "main": "dist/index",
   "types": "dist/index",
   "files": [
@@ -12,45 +12,41 @@
     "build": "yarn build:ts",
     "build:ts": "tsc -p ./tsconfig.json",
     "clean": "rimraf dist/ ./tsconfig.tsbuildinfo",
-    "test:coverage": "echo 'no tests'",
+    "test:coverage": "yarn test",
+    "test": "npx mocha --require ts-node/register --timeout 100000 'test/**/*.ts'",
     "lint": "yarn lint:fix && yarn lint:check",
     "lint:fix": "yarn lint:ts:fix",
     "lint:check": "yarn lint:ts:check",
     "lint:ts:fix": "yarn lint:ts:check --fix",
     "lint:ts:check": "eslint . --max-warnings=0",
     "pre-commit": "lint-staged",
-    "deploy": "npx hardhat deploy-system"
+    "deploy": "npx hardhat deploy-system",
+    "sync:rpc": "infisical export --path='/RPC' --env=dev >> .env"
   },
-  "homepage": "https://github.com/smartcontracts/chugsplash/tree/develop/packages/core#readme",
+  "homepage": "https://github.com/sphinx-labs/sphinx/tree/main/packages/core#readme",
   "license": "MIT",
   "author": "Kelvin Fichter",
   "repository": {
     "type": "git",
-    "url": "https://github.com/smartcontracts/chugsplash.git"
+    "url": "https://github.com/smartcontracts/sphinx.git"
   },
   "dependencies": {
     "@amplitude/node": "^1.10.2",
-    "@chugsplash/contracts": "^0.7.3",
     "@eth-optimism/common-ts": "^0.7.1",
-    "@eth-optimism/contracts-bedrock": "^0.0.0-20230522161230",
-    "@eth-optimism/core-utils": "^0.9.1",
-    "@ethersproject/abstract-provider": "^5.7.0",
-    "@metamask/eth-sig-util": "^5.1.0",
-    "@nomiclabs/hardhat-etherscan": "^3.1.7",
+    "@ethersproject/bignumber": "^5.7.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.4",
+    "@nomicfoundation/hardhat-verify": "^2.0.2",
     "@openzeppelin/hardhat-upgrades": "^1.22.1",
-    "@openzeppelin/upgrades-core": "^1.20.6",
+    "@openzeppelin/merkle-tree": "1.0.5",
+    "@sphinx-labs/contracts": "^0.23.0",
     "axios": "^1.4.0",
     "chalk": "^4.1.2",
     "core-js": "^3.27.1",
     "dotenv": "^16.0.3",
-    "ethers": "^5.6.9",
+    "ethers": "^6.7.0",
     "fs": "^0.0.1-security",
     "handlebars": "^4.7.7",
-    "hardhat": "^2.10.0",
-    "hardhat-deploy": "^0.11.18",
     "insight": "^0.11.1",
-    "ipfs-http-client": "56.0.3",
-    "ipfs-only-hash": "^4.0.0",
     "merkletreejs": "^0.2.18",
     "ora": "^5.4.1",
     "semver": "^7.3.8",
@@ -59,7 +55,10 @@
     "yesno": "^0.4.0"
   },
   "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.2.1",
-    "hardhat": "^2.10.0"
+    "@types/sinon": "^17.0.2",
+    "chai": "^4.3.8",
+    "sinon": "^17.0.1",
+    "sinon-chai": "^3.7.0",
+    "hardhat": "2.20.1"
   }
 }

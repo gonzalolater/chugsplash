@@ -1,0 +1,10 @@
+forge-std/=node_modules/forge-std/src/
+ds-test/=node_modules/ds-test/src/
+@sphinx-labs/contracts/=../contracts/contracts/foundry
+
+@openzeppelin/contracts-upgradeable/=../../node_modules/@openzeppelin/contracts-upgradeable/
+@openzeppelin/contracts/=../../node_modules/@openzeppelin/contracts/
+solidity-stringutils=../../node_modules/solidity-stringutils/src/
+@eth-optimism/contracts/=../../node_modules/@eth-optimism/contracts/
+solmate/src/=../../node_modules/solmate/src/
+@layerzerolabs/solidity-examples/contracts/=../../node_modules/@layerzerolabs/solidity-examples/contracts/

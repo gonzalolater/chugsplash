@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "@chugsplash/demo",
-  "version": "0.6.0",
-  "description": "ChugSplash demo",
+  "name": "@sphinx-labs/demo",
+  "version": "0.13.1",
+  "description": "Sphinx demo",
   "main": "dist/index",
   "types": "dist/index",
   "files": [
@@ -11,43 +11,44 @@
   "scripts": {
     "build": "yarn build:contracts && yarn build:ts",
     "build:ts": "tsc -p ./tsconfig.json",
-    "build:contracts": "hardhat compile",
+    "build:contracts": "forge build",
     "clean": "rimraf dist/ ./tsconfig.tsbuildinfo",
-    "test:coverage": "echo 'no tests'",
+    "test:coverage": "yarn test",
+    "test": "npx mocha --require ts-node/register --timeout 800000 'test/**/*.ts'",
     "lint": "yarn lint:fix && yarn lint:check",
-    "lint:check": "yarn lint:contracts:check && yarn lint:ts:check",
-    "lint:fix": "yarn lint:contracts:fix && yarn lint:ts:fix",
+    "lint:check": "yarn lint:ts:check",
+    "lint:fix": "yarn lint:ts:fix",
     "lint:ts:check": "eslint .",
     "lint:ts:fix": "yarn lint:ts:check --fix",
-    "lint:contracts:check": "yarn solhint -f table 'contracts/**/*.sol'",
-    "lint:contracts:fix": "prettier --write 'contracts/**/*.sol'",
     "pre-commit": "lint-staged"
   },
-  "homepage": "https://github.com/smartcontracts/chugsplash/tree/develop/packages/demo#readme",
+  "homepage": "https://github.com/sphinx-labs/sphinx/tree/main/packages/demo#readme",
   "license": "MIT",
   "author": "Kelvin Fichter",
   "repository": {
     "type": "git",
-    "url": "https://github.com/smartcontracts/chugsplash.git"
+    "url": "https://github.com/smartcontracts/sphinx.git"
   },
   "devDependencies": {
-    "@eth-optimism/core-utils": "^0.10.1",
-    "@nomiclabs/hardhat-ethers": "^2.0.6",
+    "@nomicfoundation/hardhat-ethers": "^3.0.4",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@openzeppelin/contracts": "^4.6.0",
     "@openzeppelin/contracts-upgradeable": "^4.6.0",
     "@rari-capital/solmate": "7.0.0-alpha.3",
     "chai": "^4.3.6",
     "dotenv": "^16.0.3",
-    "ethers": "^5.6.9",
-    "hardhat": "^2.9.9",
-    "solhint": "^3.3.6",
-    "solhint-plugin-prettier": "^0.0.5"
+    "semver": "^7.3.8",
+    "hardhat": "2.20.1",
+    "p-limit": "^3.1.0"
   },
   "dependencies": {
-    "@chugsplash/contracts": "^0.7.3",
-    "@chugsplash/core": "^0.10.0",
-    "@chugsplash/plugins": "^0.15.0",
+    "@sphinx-labs/contracts": "^0.23.0",
+    "@sphinx-labs/core": "^0.26.0",
+    "@sphinx-labs/plugins": "^0.33.0",
     "@types/node": "^18.0.0",
+    "ds-test": "https://github.com/dapphub/ds-test.git#e282159d5170298eb2455a6c05280ab5a73a4ef0",
+    "ethers": "^6.7.0",
+    "forge-std": "https://github.com/foundry-rs/forge-std.git#v1.7.1",
     "solidity-ast": "^0.4.46"
   }
 }

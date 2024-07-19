@@ -14,10 +14,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js 16.x
-        uses: actions/setup-node@master
+      - name: Setup Node.js 18.x
+        uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -32,10 +32,15 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: yarn --frozen-lockfile --network-concurrency 1
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
 
       - name: Build
-        run: yarn build
+        run: yarn build:release
 
       - name: Setup canary snapshot
         run: yarn changeset version --snapshot

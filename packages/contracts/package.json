@@ -1,56 +1,58 @@
 {
-  "name": "@chugsplash/contracts",
-  "version": "0.7.3",
-  "description": "ChugSplash contracts",
+  "name": "@sphinx-labs/contracts",
+  "version": "0.23.0",
+  "description": "Sphinx contracts",
   "main": "dist/index",
   "types": "dist/index",
   "files": [
     "dist/*",
-    "artifacts/contracts/**/*.json",
-    "artifacts/@thirdweb-dev/contracts/forwarder/Forwarder.sol/*.json",
-    "artifacts/@eth-optimism/contracts-bedrock/contracts/universal/Proxy.sol/*.json",
-    "artifacts/build-info/**/*.json"
+    "contracts/*",
+    "contract-artifacts/**/*.json"
   ],
   "scripts": {
-    "build": "yarn build:contracts && yarn build:ts",
+    "build": "forge clean && forge build --build-info --contracts contracts/core --extra-output storageLayout --skip test --skip script && yarn generate && forge build && yarn build:ts",
+    "generate": "yarn write-constants && yarn write-initcode",
+    "write-constants": "npx ts-node scripts/write-constants.ts > contracts/foundry/SphinxConstants.sol",
+    "write-initcode": "npx ts-node scripts/write-initcode.ts > test/SphinxInitCode.sol",
+    "write-version": "npx ts-node scripts/write-version.ts > src/version.ts && yarn generate ",
     "build:ts": "tsc -p ./tsconfig.json",
-    "build:contracts": "hardhat clean && hardhat compile",
-    "clean": "rimraf dist/ ./tsconfig.tsbuildinfo",
-    "test:coverage": "forge test",
-    "slither": "./scripts/slither.sh",
+    "clean": "rimraf dist/ ./tsconfig.tsbuildinfo out/ cache/",
+    "test:coverage": "yarn test",
+    "test": "yarn test:solc && yarn test:ts && yarn test:forge",
+    "test:ts": "npx mocha --require ts-node/register --timeout 500000 'test/mocha/**/*.ts'",
+    "test:solc": "/bin/bash ./test/solc.sh",
+    "test:forge": "/bin/bash ./test/forge-tests.sh",
+    "slither": "FOUNDRY_PROFILE=core slither .",
     "lint": "yarn lint:fix && yarn lint:check",
     "lint:check": "yarn lint:contracts:check && yarn lint:ts:check",
     "lint:fix": "yarn lint:contracts:fix && yarn lint:ts:fix",
     "lint:ts:check": "eslint .",
     "lint:ts:fix": "yarn lint:ts:check --fix",
-    "lint:contracts:check": "yarn solhint -f table 'contracts/**/*.sol' && yarn prettier --check 'contracts/**/*.sol'",
-    "lint:contracts:fix": "yarn prettier --write '{contracts,test}/**/*.sol' && yarn solhint --fix '{contracts,test}/**/*.sol'",
+    "lint:contracts:check": "yarn prettier --check 'contracts/**/*.sol'",
+    "lint:contracts:fix": "yarn prettier --write '{contracts,test}/**/*.sol'",
     "pre-commit": "lint-staged"
   },
-  "homepage": "https://github.com/smartcontracts/chugsplash/tree/develop/packages/contracts#readme",
+  "homepage": "https://github.com/sphinx-labs/sphinx/tree/main/packages/contracts#readme",
   "license": "MIT",
   "author": "Kelvin Fichter",
   "repository": {
     "type": "git",
-    "url": "https://github.com/smartcontracts/chugsplash.git"
+    "url": "https://github.com/smartcontracts/sphinx.git"
   },
   "devDependencies": {
-    "@connext/interfaces": "^2.0.5",
-    "@eth-optimism/core-utils": "^0.9.0",
-    "@openzeppelin/contracts": "^4.8.1",
-    "@openzeppelin/contracts-upgradeable": "^4.6.0",
-    "@thirdweb-dev/contracts": "^3.5.1",
+    "@gnosis.pm/safe-contracts-1.4.1": "https://github.com/safe-global/safe-contracts.git#192c7dc67290940fcbc75165522bb86a37187069",
+    "@gnosis.pm/safe-contracts": "https://github.com/safe-global/safe-contracts.git#767ef36bba88bdbc0c9fe3708a4290cabef4c376",
+    "@openzeppelin/merkle-tree": "1.0.5",
     "dotenv": "^16.0.1",
-    "ds-test": "https://github.com/dapphub/ds-test.git#9310e879db8ba3ea6d5c6489a579118fd264a3f5",
-    "ethers": "^5.6.9",
-    "forge-std": "https://github.com/foundry-rs/forge-std#2a2ce3692b8c1523b29de3ec9d961ee9fbbc43a6",
-    "hardhat": "^2.9.9",
-    "solhint": "^3.4.1",
-    "solhint-plugin-prettier": "^0.0.5",
-    "solmate": "^6.7.0"
+    "ds-test": "https://github.com/dapphub/ds-test.git#e282159d5170298eb2455a6c05280ab5a73a4ef0",
+    "sphinx-forge-std": "https://github.com/foundry-rs/forge-std.git#v1.7.1",
+    "mocha": "^10.2.0",
+    "chai": "^4.3.10",
+    "sinon": "^17.0.1"
   },
   "dependencies": {
-    "@eth-optimism/contracts": "^0.5.40",
-    "@eth-optimism/contracts-bedrock": "^0.0.0-20230522161230"
+    "@openzeppelin/contracts": "4.9.3",
+    "ethers": "^6.7.0",
+    "solmate": "6.2.0"
   }
 }

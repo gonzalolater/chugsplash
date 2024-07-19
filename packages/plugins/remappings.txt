@@ -1,6 +1,13 @@
-@chugsplash/=../
+hardhat=../../node_modules/hardhat/
+@sphinx-labs/contracts/=../contracts
 @openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/
 @openzeppelin/contracts/=node_modules/@openzeppelin/contracts/
-forge-std/=lib/forge-std/src/
-@eth-optimism/contracts-bedrock/=node_modules/@eth-optimism/contracts-bedrock/
+sphinx-forge-std/=node_modules/@sphinx-labs/contracts/node_modules/sphinx-forge-std/src/
+sphinx-solmate/=node_modules/sphinx-solmate/src/
+ds-test/=node_modules/ds-test/src/
+solidity-stringutils=node_modules/solidity-stringutils/src/
 @eth-optimism/contracts/=node_modules/@eth-optimism/contracts/
+@sphinx-labs/plugins=contracts/foundry/
+@layerzerolabs/solidity-examples/contracts/=node_modules/@layerzerolabs/solidity-examples/contracts/
+solady=../../node_modules/solady/src/
+@gnosis.pm/safe-contracts-1.3.0/=node_modules/@sphinx-labs/contracts/node_modules/@gnosis.pm/safe-contracts/contracts/
